@@ -20,8 +20,6 @@ st.title("💸 MyFinance - Gestione Entrate e Uscite")
 # 📥 Inserimento dati
 st.subheader("📌 Inserisci una nuova voce")
 
-
-
 col1, col2 = st.columns(2)
 with col1:
     data = st.date_input("Data", value=datetime.today())
@@ -50,15 +48,6 @@ if st.button("Aggiungi"):
 
 # 📊 Report
 st.subheader("📅 Report Finanziario")
-# 📥 Download del report filtrato
-st.download_button(
-    label="📁 Scarica report CSV",
-    data=df_filtrato.to_csv(index=False).encode("utf-8"),
-    file_name=f"report_{filtro.replace(' ', '_')}.csv",
-    mime="text/csv"
-)
-
-
 
 if os.path.exists(FILE):
     df = pd.read_csv(FILE)
@@ -89,6 +78,15 @@ if os.path.exists(FILE):
     spese_per_categoria = df_filtrato[df_filtrato["Tipo"] == "Uscita"].groupby("Categoria")["Importo"].sum()
     if not spese_per_categoria.empty:
         st.bar_chart(spese_per_categoria)
+
+    # 📥 Download del report filtrato
+    st.download_button(
+        label="📁 Scarica report CSV",
+        data=df_filtrato.to_csv(index=False).encode("utf-8"),
+        file_name=f"report_{filtro.replace(' ', '_')}.csv",
+        mime="text/csv"
+    )
 else:
     st.info("ℹ️ Nessun dato disponibile. Inserisci una voce per iniziare.")
+
 
